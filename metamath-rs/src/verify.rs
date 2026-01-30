@@ -722,6 +722,10 @@ fn verify_proof<'a, P: ProofBuilder>(
                 } else if ch == b'?' {
                     try_assert!(k == 0, Diagnostic::ProofMalformedVarint);
                     return Err(Diagnostic::ProofIncomplete);
+                } else {
+                    // Reject invalid characters (digits, lowercase, punctuation, etc.)
+                    // Valid compressed proof chars per Appendix B: A-Z and ?
+                    return Err(Diagnostic::ProofMalformedVarint);
                 }
             }
             i += 1;
